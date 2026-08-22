@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const EmployeeDashboard = () => {
   return (
@@ -30,11 +31,11 @@ const EmployeeDashboard = () => {
           <p className="text-gray-500 text-sm">Track daily/weekly views and manage check-in/check-out.</p>
         </div>
 
-        {/* Leave Requests Card */}
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:shadow-md hover:border-purple-300 transition cursor-pointer">
+        {/* Leave Requests Card - THIS IS THE CORRECTED LINK */}
+        <Link to="/leave" className="block bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:shadow-md hover:border-purple-300 transition cursor-pointer">
           <h2 className="text-xl font-semibold text-purple-700 mb-2">Leave Requests</h2>
           <p className="text-gray-500 text-sm">Apply for time-off and track your pending approval status.</p>
-        </div>
+        </Link>
       </div>
 
       {/* Recent Activity / Alerts */}
