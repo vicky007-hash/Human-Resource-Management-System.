@@ -161,3 +161,42 @@ def evaluate_leave(leave_id: int, admin_id: int, new_status: str, db: Session = 
     db.commit()
     
     return {"message": f"Leave request updated to {new_status}"}
+
+
+# ==========================================
+# PAYROLL & SALARY MANAGEMENT ENDPOINTS
+# ==========================================
+
+@app.get("/payroll/employee/{employee_id}", response_model=schemas.EmployeeResponse)
+def get_employee_payroll(employee_id: int, db: Session = Depends(get_db)):
+    # Employee Payroll View: Payroll data is strictly read-only for employees
+    employee = db.query(models.Employee).filter(models.Employee.id == employee_id).first()
+    if not employee:
+        raise HTTPException(status_code=404, detail="Employee not found")
+        
+    return employee
+
+@app.get("/payroll/admin/all", response_model=List[schemas.EmployeeResponse])
+def get_all_payroll(admin_id: int, db: Session = Depends(get_db)):
+    # Admin Payroll Control: Admin can view payroll of all employees
+    admin_check = db.query(models.Employee).filter(models.Employee.id == admin_id).first()
+    if not admin_check or admin_check.role != "HR":
+        raise HTTPException(status_code=403, detail="Admin privileges required")
+        
+    return db.query(models.Employee).all()
+
+@app.put("/payroll/admin/update/{target_employee_id}")
+def update_salary_structure(target_employee_id: int, admin_id: int, new_salary_structure: str, db: Session = Depends(get_db)):
+    # Admin Payroll Control: Admin can update salary structure and ensure accuracy
+    admin_check = db.query(models.Employee).filter(models.Employee.id == admin_id).first()
+    if not admin_check or admin_check.role != "HR":
+        raise HTTPException(status_code=403, detail="Admin privileges required")
+        
+    target_employee = db.query(models.Employee).filter(models.Employee.id == target_employee_id).first()
+    if not target_employee:
+        raise HTTPException(status_code=404, detail="Target employee not found")
+        
+    target_employee.salary_structure = new_salary_structure
+    db.commit()
+    
+    return {"message": f"Salary structure successfully updated for employee {target_employee_id}"}
