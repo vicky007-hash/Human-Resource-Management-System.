@@ -2,46 +2,42 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
-  // State Management for inputs, loading status, and errors
   const [credentials, setCredentials] = useState({ email: '', password: '' });
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   
   const navigate = useNavigate();
 
-  // Dynamically update state as the user types
   const handleChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
 
-  // API Integration Handler
   const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    setErrorMessage(null); // Clear previous errors
+    setErrorMessage(null); 
 
     try {
-      // Future API connection to your Python backend
-      /* 
-      const response = await fetch('http://localhost:8000/login', {
+      // Sending the email and password to the FastAPI backend
+      const response = await fetch('http://localhost:8000/signin', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(credentials)
       });
+      
       const data = await response.json();
-      if (!response.ok) throw new Error(data.message || 'Login failed');
-      */
-
-      // Hackathon Simulation: Simulating a 1-second network request
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
-      // Mocking the validation to display error messages as required
-      if (!credentials.email.includes('@')) {
-        throw new Error('Please enter a valid email address.');
+      
+      // Catch specific errors returned by Python (e.g., "Incorrect email or password")
+      if (!response.ok) {
+        throw new Error(data.detail || 'Authentication failed. Please try again.');
       }
 
-      // Route based on role: if 'admin' is in the email, go to Admin Dashboard
-      if (credentials.email.includes('admin')) {
+      // Store the user session data so dashboard components know who is logged in
+      localStorage.setItem('user_id', data.user_id);
+      localStorage.setItem('role', data.role);
+
+      // Securely route based on the exact role saved in the database
+      if (data.role === 'HR') {
         navigate('/admin');
       } else {
         navigate('/employee');
@@ -61,7 +57,6 @@ const Login = () => {
         <p className="text-gray-500 mb-8 text-sm text-center">Enter your credentials to continue</p>
         
         <form onSubmit={handleLogin} className="space-y-5">
-          {/* Email Input */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
             <input 
@@ -74,7 +69,6 @@ const Login = () => {
             />
           </div>
 
-          {/* Password Input */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
             <input 
@@ -87,14 +81,12 @@ const Login = () => {
             />
           </div>
 
-          {/* Error Message Display */}
           {errorMessage && (
             <div className="text-red-600 text-sm bg-red-50 p-3 rounded-lg border border-red-100">
               {errorMessage}
             </div>
           )}
 
-          {/* Submit Button with Loading State */}
           <button 
             type="submit" 
             disabled={isLoading}
