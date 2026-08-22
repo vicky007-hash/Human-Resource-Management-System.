@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 // Note: Ensure the file paths exactly match your GitHub repository filenames
 import EmployeeDashboard from './Employeedashboard'; 
 import AdminDashboard from './AdminDashboard';
+import LeaveApplication from './LeaveApplication';
 
 // A temporary login screen to simulate the Sign In flow for the hackathon
 const LoginPlaceholder = () => {
@@ -44,9 +45,15 @@ const App = () => {
         {/* Secure dashboard routes */}
         <Route path="/employee" element={<EmployeeDashboard />} />
         <Route path="/admin" element={<AdminDashboard />} />
+        
+        {/* NEW LEAVE APPLICATION ROUTE GOES HERE */}
+        <Route path="/leave" element={<LeaveApplication />} />
       </Routes>
     </Router>
   );
 };
 
 export default App;
+
+
+
