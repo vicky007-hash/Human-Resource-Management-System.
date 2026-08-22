@@ -1,2 +1,4 @@
 # Human-Resource-Management-System.
-This project is to define the functional and non-functional requirements  of a Human Resource Management System HRMS. The system aims to digitize and  streamline core HR operations such as employee onboarding, profile management,  attendance tracking, leave management, payroll visibility, and approval workflows for  admins and HR officers.
+The Human Resource Management System (HRMS) is a software application designed to automate and simplify the management of employee-related activities within an organization. It provides a centralized platform where HR managers, administrators, and employees can manage and access important information such as employee records, attendance, leave, payroll, recruitment, performance, and other HR-related operations.
+
+Traditional HR management often relies on paperwork, spreadsheets, and multiple disconnected systems. This can result in data duplication, calculation errors, difficulty tracking employee information, and time-consuming administrative work. The proposed HRMS addresses these challenges by providing a digital, centralized, secure, and user-friendly system.
